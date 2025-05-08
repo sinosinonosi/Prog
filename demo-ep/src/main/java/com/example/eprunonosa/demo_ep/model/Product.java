@@ -1,24 +1,27 @@
 package com.example.eprunonosa.demo_ep.model;
-import jakarta.persistence.*;
-import lombok.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "productos")
 public class Product {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nombre;
-    private float precio;
-    private int cantidad;
-    private float costeFabricacion;
+    private Double precio;
+    private Integer cantidad;
+    private Double costeFabricacion;
+
+    @JsonBackReference  // Evita la recursión infinita
     @ManyToOne
-    @JoinColumn(name = "categoria_id")
+    @JoinColumn(name = "category_id")
     private Category categoria;
 }
-
-
-

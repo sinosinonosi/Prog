@@ -20,40 +20,41 @@ public class CategoryController {
     }
 
     @GetMapping("/category/{id}")
-    public Category findById(@PathVariable Long id) {
-        return categoryService.findById(id);
+    public ResponseEntity<Category> findById(@PathVariable Long id) {
+        Category category = categoryService.findById(id);
+        if (category == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(category, HttpStatus.OK);
     }
 
     @PostMapping("/category")
-    public ResponseEntity<?> addcategory(@RequestBody Category category) {
+    public ResponseEntity<?> addCategory(@RequestBody Category category) {
         try {
             categoryService.save(category);
             return new ResponseEntity<>(category, HttpStatus.CREATED);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/category/{id}")
     public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody Category category) {
-        try {
-            Category currentcategory = categoryService.findById(id);
-            currentcategory.setShortName(category.getShortName());
-            currentcategory.setDescription(category.getDescription());
-            categoryService.save(currentcategory);
-            return new ResponseEntity<>(currentcategory, HttpStatus.OK);
-        }catch (Exception e) {
-            return new ResponseEntity<Category>(HttpStatus.NOT_FOUND);
+        Category currentCategory = categoryService.findById(id);
+        if (currentCategory == null) {
+            return new ResponseEntity<>("Category not found", HttpStatus.NOT_FOUND);
         }
+        currentCategory.setShortName(category.getShortName());
+        currentCategory.setDescription(category.getDescription());
+        categoryService.save(currentCategory);
+        return new ResponseEntity<>(currentCategory, HttpStatus.OK);
     }
 
     @DeleteMapping("/category/{id}")
-    public ResponseEntity<?> deletecategory(@PathVariable Long id) {
-        try {
-            categoryService.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }catch (Exception e) {
-            return new ResponseEntity<Category>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
+        if (!categoryService.deleteById(id)) {
+            return new ResponseEntity<>("Category not found", HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

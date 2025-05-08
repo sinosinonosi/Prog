@@ -3,23 +3,20 @@ package com.example.eprunonosa.demo_ep.services;
 import com.example.eprunonosa.demo_ep.model.Product;
 import com.example.eprunonosa.demo_ep.repository.CategoryRepository;
 import com.example.eprunonosa.demo_ep.repository.ProductRepository;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
 public class ProductService {
+
     @Autowired
     private ProductRepository productRepository;
+
     @Autowired
     private CategoryRepository categoryRepository;
+
     public List<Product> listProducts() {
         return productRepository.findAll();
     }
@@ -29,12 +26,14 @@ public class ProductService {
     }
 
     public Product findById(Integer id) {
-        return productRepository.findById(id).get();
+        return productRepository.findById(id).orElse(null);
     }
 
-    public void deleteById(Integer id) {
-        productRepository.deleteById(id);
+    public boolean deleteById(Integer id) {
+        if (productRepository.existsById(id)) {
+            productRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
-
-
 }
