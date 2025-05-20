@@ -18,7 +18,7 @@ public class ProductoDAOImpl implements ProductoDAO {
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost:3306/test";
     static final String DB_USR = "root";
-    static final String DB_PWD = "";
+    static final String DB_PWD = "#Ab1234";
 
     /**
      * Load the driver class

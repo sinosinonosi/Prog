@@ -1,4 +1,4 @@
-
+    
 package monlau.model;
 
 import lombok.AllArgsConstructor;
