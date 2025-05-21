@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS Producto (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+    precio DOUBLE
+);
